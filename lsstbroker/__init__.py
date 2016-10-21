@@ -1,0 +1,5 @@
+__author__ = 'CSC 380 Team 8'
+__copyright__ = 'Copyright 2016 CSC 380 Team 8'
+__license__ = 'GPLv3'
+__title__ = 'lsstbroker'
+__version__ = '0.1'
