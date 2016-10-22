@@ -1,0 +1,23 @@
+language: python
+python:
+  - "2.7"
+
+install:
+  # Download and setup Conda
+  - wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+
+  # Install build tool and setup build environment
+  - conda install conda-build
+  - conda create -q --name test-environment python=$TRAVIS_PYTHON_VERSION
+  - source activate test-environment
+
+script:
+  # Attempt to build and install the library
+  - conda build .
+  - conda install lsstbroker --use-local
