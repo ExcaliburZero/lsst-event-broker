@@ -1,6 +1,8 @@
 # LSST Event Broker
 LSST Event Broker is a Python framework for creating transient classifiers for the [Large Synoptic Survey Telescope](https://www.lsst.org/). It allows researchers to create classifiers which are run against incomming data in order to classify astronomical transients.
 
+![LSST Event Broker UML](images/event_broker_uml.png)
+
 ## Installation
 ### From Source
 To build and install the package from the source code using Conda, run the following commands. You can skip some of the steps if you have already downloaded the source or have already setup a Conda environment.
