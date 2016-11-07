@@ -21,3 +21,7 @@ script:
   # Attempt to build and install the library
   - conda build .
   - conda install lsstbroker --use-local
+
+  # Test the library
+  - nosetests
+  - python -m doctest -v lsstbroker/*.py
