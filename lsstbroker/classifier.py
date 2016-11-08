@@ -1,27 +1,32 @@
 class Classifier(object):
+    """
+    Represents a single Classifier composed of various BinaryClassifiers.
+    """
 
     determining_classifier = None
-    binary_classifiers = []
+    binary_classifiers = None
+
+    def __init__(self):
+        self.binary_classifiers = []
 
     def set_determining_classifier(self, binary_classifier):
         """
-        This method determines the classifier
+        Sets the given BinaryClassifier to be the Classifier's Determining Classifier.
         """
+        raise NotImplementedError("Have not yet implemented Determining Classifiers")
 
     def add_binary_classifier(self, binary_classifier):
         """
-        This method adds any diffirent binary classifiers to the
-        given object
+        Adds the given BinaryClassifier to the Classifier.
         """
+        if binary_classifier is not None:
+            self.binary_classifiers.append(binary_classifier)
 
     def run(self, observations):
         """
-        Method to be called to run the observations data that was
-        aquired from the transient observation class
+        Runs the given Observation data through the Classifier's BinaryClassifiers and returns the results as a list.
         """
-
-
-
-
-
-#binary_classifiers
+        results = []
+        for binary_classifier in self.binary_classifiers:
+            results.append(binary_classifier.run(observations))
+        return results
