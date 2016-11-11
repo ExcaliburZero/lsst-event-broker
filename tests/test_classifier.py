@@ -8,7 +8,7 @@ class TestClassifier(unittest.TestCase):
 
     def test_add_binary_classifier(self):
         def function(_): return 0.5
-        test_binary_classifier = binary_classifier.BinaryClassifier(function)
+        test_binary_classifier = binary_classifier.BinaryClassifier("001", function)
         test_classifier = classifier.Classifier()
 
         test_classifier.add_binary_classifier(test_binary_classifier)
@@ -24,7 +24,7 @@ class TestClassifier(unittest.TestCase):
 
     def test_set_determining_classifier(self):
         def function(_): return 0.5
-        test_binary_classifier = binary_classifier.BinaryClassifier(function)
+        test_binary_classifier = binary_classifier.BinaryClassifier("001", function)
         test_classifier = classifier.Classifier()
 
         with self.assertRaises(NotImplementedError) as context:
@@ -34,19 +34,21 @@ class TestClassifier(unittest.TestCase):
 
     def test_run(self):
         def function(_): return 0.7
-        test_binary_classifier = binary_classifier.BinaryClassifier(function)
+        test_binary_classifier = binary_classifier.BinaryClassifier("001", function)
         test_classifier = classifier.Classifier()
 
         test_classifier.add_binary_classifier(test_binary_classifier)
 
         observations = []
-        self.assertEquals([0.7], test_classifier.run(observations))
+        results = [("001", 0.7)]
+        self.assertEquals(results, test_classifier.run(observations))
 
         # Test multiple BinaryClassifiers
         def function2(_): return 0.5
-        test_binary_classifier2 = binary_classifier.BinaryClassifier(function2)
+        test_binary_classifier2 = binary_classifier.BinaryClassifier("002", function2)
 
         test_classifier.add_binary_classifier(test_binary_classifier2)
 
-        self.assertEquals([0.7, 0.5], test_classifier.run(observations))
+        results2 = [("001", 0.7), ("002", 0.5)]
+        self.assertEquals(results2, test_classifier.run(observations))
 
