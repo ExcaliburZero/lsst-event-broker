@@ -3,6 +3,9 @@ python:
   - "2.7"
 
 install:
+  # Install coveralls for test coverage reports
+  - pip install coveralls
+
   # Download and setup Conda
   - wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
   - bash miniconda.sh -b -p $HOME/miniconda
@@ -16,9 +19,6 @@ install:
   - conda install conda-build
   - conda create -q --name test-environment python=$TRAVIS_PYTHON_VERSION
   - source activate test-environment
-
-  # Install coveralls for test coverage reports
-  - pip install coveralls
 
 script:
   # Attempt to build and install the library
