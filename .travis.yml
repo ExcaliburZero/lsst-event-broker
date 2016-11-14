@@ -17,11 +17,18 @@ install:
   - conda create -q --name test-environment python=$TRAVIS_PYTHON_VERSION
   - source activate test-environment
 
+  # Install coveralls for test coverage reports
+  - pip install coveralls
+
 script:
   # Attempt to build and install the library
   - conda build .
   - conda install lsstbroker --use-local
 
   # Test the library
-  - nosetests
+  - nosetests --with-coverage --cover-package=lsstbroker
   - python -m doctest -v lsstbroker/*.py
+
+after_success:
+  # Send test coverage report
+  - coveralls
