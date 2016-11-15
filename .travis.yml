@@ -3,6 +3,9 @@ python:
   - "2.7"
 
 install:
+  # Install Python libraries
+  - pip install -r requirements.txt
+
   # Download and setup Conda
   - wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
   - bash miniconda.sh -b -p $HOME/miniconda
@@ -24,4 +27,3 @@ script:
 
   # Test the library
   - nosetests
-  - python -m doctest -v lsstbroker/*.py

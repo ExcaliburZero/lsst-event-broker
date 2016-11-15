@@ -23,4 +23,6 @@ class BinaryClassifier(object):
         Method to be called to run the observations data that was
         aquired from the transient observation class
         """
-        return self.name, self.classifying_function(observations)
+        result = self.classifying_function(observations)
+        last_obs = observations[-1]
+        return last_obs.object_id, last_obs.time, self.name, result

@@ -2,6 +2,7 @@ import unittest
 
 from lsstbroker import binary_classifier
 from lsstbroker import classifier
+from lsstbroker import observation
 
 
 class TestClassifier(unittest.TestCase):
@@ -27,7 +28,7 @@ class TestClassifier(unittest.TestCase):
         test_determining_classifier = binary_classifier.BinaryClassifier("D001", function)
 
         def continue_function(x):
-            (_, value) = x
+            (_, _, _, value) = x
             return value > 0.5
         test_classifier = classifier.Classifier()
 
@@ -37,9 +38,9 @@ class TestClassifier(unittest.TestCase):
         self.assertEquals(continue_function, test_classifier.continue_function)
 
         # Run with just a determining classifier
-        no_observations = []
-        expected_results = [("D001", 0.7)]
-        self.assertEquals(expected_results, test_classifier.run(no_observations))
+        one_observation = [observation.Observation("LSST-00001", 0, 50.2, 0.005)]
+        expected_results = [("LSST-00001", 0, "D001", 0.7)]
+        self.assertEquals(expected_results, test_classifier.run(one_observation))
 
     def test_run_no_determining(self):
         def function(_): return 0.7
@@ -48,8 +49,8 @@ class TestClassifier(unittest.TestCase):
 
         test_classifier.add_binary_classifier(test_binary_classifier)
 
-        observations = []
-        results = [("001", 0.7)]
+        observations = [observation.Observation("LSST-00001", 0, 50.2, 0.005)]
+        results = [("LSST-00001", 0, "001", 0.7)]
         self.assertEquals(results, test_classifier.run(observations))
 
         # Test multiple BinaryClassifiers
@@ -58,7 +59,7 @@ class TestClassifier(unittest.TestCase):
 
         test_classifier.add_binary_classifier(test_binary_classifier2)
 
-        results2 = [("001", 0.7), ("002", 0.5)]
+        results2 = [("LSST-00001", 0, "001", 0.7), ("LSST-00001", 0, "002", 0.5)]
         self.assertEquals(results2, test_classifier.run(observations))
 
     def test_run_with_determining(self):
@@ -70,15 +71,15 @@ class TestClassifier(unittest.TestCase):
         test_binary_classifier = binary_classifier.BinaryClassifier("002", function2)
 
         def continue_function(x):
-            (_, value) = x
+            (_, _, _, value) = x
             return value > 0.5
         test_classifier = classifier.Classifier()
 
         test_classifier.set_determining_classifier(test_determining_classifier, continue_function)
         test_classifier.add_binary_classifier(test_binary_classifier)
 
-        observations = []
-        results = [("D001", 0.7), ("002", 0.6)]
+        observations = [observation.Observation("LSST-00001", 0, 50.2, 0.005)]
+        results = [("LSST-00001", 0, "D001", 0.7), ("LSST-00001", 0, "002", 0.6)]
         self.assertEquals(results, test_classifier.run(observations))
 
         # Test continue function evaluating to false
@@ -86,6 +87,6 @@ class TestClassifier(unittest.TestCase):
         test_determining_classifier2 = binary_classifier.BinaryClassifier("D003", function3)
         test_classifier.set_determining_classifier(test_determining_classifier2, continue_function)
 
-        observations = []
-        results = [("D003", 0.3)]
+        observations = [observation.Observation("LSST-00001", 0, 50.2, 0.005)]
+        results = [("LSST-00001", 0, "D003", 0.3)]
         self.assertEquals(results, test_classifier.run(observations))
