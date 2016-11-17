@@ -3,6 +3,9 @@ python:
   - "2.7"
 
 install:
+  # Install coveralls for test coverage reports
+  - pip install coveralls
+
   # Install Python libraries
   - pip install -r requirements.txt
 
@@ -26,4 +29,8 @@ script:
   - conda install lsstbroker --use-local
 
   # Test the library
-  - nosetests
+  - nosetests --with-coverage --cover-package=lsstbroker
+
+after_success:
+  # Send test coverage report
+  - coveralls
