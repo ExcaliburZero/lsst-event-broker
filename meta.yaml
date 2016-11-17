@@ -10,6 +10,8 @@ requirements:
     - python
     - setuptools ==27.2.0
     - mysql-python
+    - dask
+    - toolz
 
   run:
     - python

@@ -1,6 +1,12 @@
+from dask import delayed
+
+
 class ClassifierBox(object):
 
-    classifiers = []
+    classifiers = None
+
+    def __init__(self):
+        self.classifiers = []
 
     def add_classifier(self, classifier):
         """
@@ -14,9 +20,11 @@ class ClassifierBox(object):
         Method to be called to run the observations data that was
         aquired from the transient observation class
         """
-        results = []
+        calculations = []
         for classifier in self.classifiers:
-            result = classifier.run(observations)
-            results.append(result)
+            calc = delayed(classifier.run)(observations)
+            calculations.append(calc)
+
+        results = delayed(calculations).compute()
 
         return results

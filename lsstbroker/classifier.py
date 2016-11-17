@@ -1,3 +1,6 @@
+from dask import delayed
+
+
 class Classifier(object):
     """
     Represents a single Classifier composed of various BinaryClassifiers.
@@ -44,7 +47,10 @@ class Classifier(object):
                 run_all_classifiers = False
 
         if run_all_classifiers:
+            calculations = []
             for binary_classifier in self.binary_classifiers:
-                results.append(binary_classifier.run(observations))
+                calc = delayed(binary_classifier.run)(observations)
+                calculations.append(calc)
+            results = results + delayed(calculations).compute()
 
         return results
