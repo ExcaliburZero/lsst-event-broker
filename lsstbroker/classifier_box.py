@@ -1,6 +1,9 @@
 class ClassifierBox(object):
 
-    classifiers = []
+    classifiers = None
+
+    def __init__(self):
+        self.classifiers = []
 
     def add_classifier(self, classifier):
         """
