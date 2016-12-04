@@ -13,11 +13,11 @@ from subprocess import check_output
 
 class rrLyraeBinary(object):
     
-    name = ""
-    classifying_function = ""
-    obsList = []
+    name = None
+    classifying_function = None
+    obsList = None
+    dirName = None
     #generate random str of length ten for directory name
-    dirName = ''.join(random.choice(string.lowercase) for i in range(15))
 
     def __init__(self, name, classifying_function):
         """
@@ -25,6 +25,8 @@ class rrLyraeBinary(object):
         """
         self.name = name
         self.classifying_function = classifying_function
+        self.dirName = ''.join(random.choice(string.lowercase) for i in range(15))
+        self.obsList = []
         
     def run(self, observations):
         """
@@ -35,9 +37,9 @@ class rrLyraeBinary(object):
         self.createFile()
         freq = self.makeBatch()
         self.cleanUp()
-        result = self.classifying_function(freq)
-        last_obs = observations[-1]
-        return last_obs.object_id, last_obs.time, self.name, result
+        #result = self.classifying_function(freq)
+        result = 1 / freq
+        return result
         
     def createFile(self):
         """
